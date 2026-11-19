@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case 5 - Take Home Assignment</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <ul class="header-list">
+        <li class="header-item"><a href="../index.html">Home</a></li>
+        <li class="header-item">
+          <a href="../index.html#cases">Cases ▾</a>
+          <ul class="case-list">
+            <li><a href="case1.html">Case 1</a></li>
+            <li><a href="case2.html">Case 2</a></li>
+            <li><a href="case3.html">Case 3</a></li>
+            <li><a href="case4.html">Case 4</a></li>
+            <li><a href="case5.html">Case 5</a></li>
+            <li><a href="case6.html">Case 6</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Case 5: Content not Being Cached</h1>
+
+    <h2>Customer ticket</h2>
+    <blockquote class="ticket">
+      <p>“After activating Cloudflare on my site, I am seeing that resources on my pages are not being cached:</p>
+      <pre>&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html; charset=utf-8
+&lt; Transfer-Encoding: chunked
+&lt; Connection: keep-alive
+&lt; Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0
+&lt; Strict-Transport-Security: max-age=10
+&lt; Server: cloudflare-nginx
+&lt; CF-RAY: 1fa4b922fef517a4-SIN
+{ [3507 bytes data]</pre>
+      <p>Why is Cloudflare's caching not working on my site?”</p>
+    </blockquote>
+
+    <h2>Response to the customer</h2>
+    <p>
+      Hello, dear [customer's name].
+    </p>
+    <p>
+      Thank you for sharing the headers in your message - they show exactly what is affecting the caching behavior on your site.
+    </p>
+    <p>
+      Please note the following reasons why caching is not working as expected:
+    </p>
+    <ol>
+      <li>
+        The Content-Type header indicates that the resource is text/html, which is typically not cached by default by Cloudflare. Cached files are usually static assets like images, CSS, JavaScript, fonts, and other similar files.
+      </li>
+      <li>
+        The Cache-Control header explicitly sets no-store, no-cache, must-revalidate,  max-age=10, which instructs both browsers and intermediate caches not to store the response. Cloudflare will respect these directives and not cache the content either.
+      </li>
+    </ol>
+    <p>
+      You can expect your images, CSS, JavaScript, and other static assets to be cached by Cloudflare. You can verify this by checking the response headers for the CF-Cache-Status header by using browser developer tools or command-line tools like curl as shown below.
+    </p>
+    <pre>curl -sD - -o /dev/null https://example.com/path/to/static/asset | grep -iE "CF-Cache-Status|age"</pre>
+    <p>
+      To have more HTML content cached, you would need to adjust the Cache-Control headers on your server to allow caching, or use Cloudflare Page Rules to override the caching behavior for specific URLs. Cache rules can mark HTML content as cacheable, enabling Cloudflare to store and serve it from the edge as long as the pages are the same for every visitor.
+    </p>
+    <p>
+      In these cases, we advise caution so that the caching rules do not inadvertently cache content that should remain private, such as pages with a login or session cookie present. Please do not skip this step since caching sensitive content could lead to security and privacy issues.
+    </p>
+    <p>
+      If your issue has not been resolved by following the above steps, please provide additional details about your setup, including the specific URLs and headers you are seeing, so we can further assist you.
+    </p>
+    <p>
+      Best regards,<br>
+      Alen Valdez Siller<br>
+      Cloudflare Support
+    </p>
+    <h2>Thought process</h2>
+    <p>
+      The customer says that after activating Cloudflare on their site, resources on their pages are not being cached. However, the content they shared is HTML and not images, CSS, or JavaScript, which are the types of resources that Cloudflare caches by default. The first step to point out is what is cached and what isn't, and why HTML content is treated differently.
+    </p>
+    <p>
+      We can determine from the docs that HTML or JSON are not cached by default by Cloudflare, and special configuration is required to enable caching for these types of content. In the case the customer wants HTML content to be cached, they would need to either adjust the Cache-Control headers on their server or use Cloudflare Page Rules to explicitly cache HTML pages, as indicated in the response.
+    </p>
+    <p>
+      It is also important to not tunnel vision on HTML content alone and read every header available. This includes checking for Cache-Control, Expires, and other relevant headers that might affect caching behavior, as well as understanding how Cloudflare interprets these headers at the edge.
+    </p>
+    <p>
+      Additionally, it is important to consider any cookies or authentication headers that might be present, as these can compromise sensitive information if cached.
+    </p>
+
+    <h2>Tools I would use and why</h2>
+    <p>
+      To analyze and troubleshoot caching issues, I would use tools such as curl to inspect HTTP headers, the browser's developer tools to check network requests and responses, and Cloudflare's diagnostic tools to understand how content is being cached at the edge and whether any cache rules are being applied correctly. These tools help identify misconfigurations and ensure that caching rules are applied correctly.
+    </p>
+
+    <div class="pager">
+      <a href="case4.html">Previous: Case 4</a>
+      <a href="case6.html">Next: Case 6</a>
+    </div>
+  </main>
+</body>
+</html>

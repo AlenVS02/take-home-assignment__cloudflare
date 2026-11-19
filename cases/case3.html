@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case 3 - Take Home Assignment</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <ul class="header-list">
+        <li class="header-item"><a href="../index.html">Home</a></li>
+        <li class="header-item">
+          <a href="../index.html#cases">Cases ▾</a>
+          <ul class="case-list">
+            <li><a href="case1.html">Case 1</a></li>
+            <li><a href="case2.html">Case 2</a></li>
+            <li><a href="case3.html">Case 3</a></li>
+            <li><a href="case4.html">Case 4</a></li>
+            <li><a href="case5.html">Case 5</a></li>
+            <li><a href="case6.html">Case 6</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Case 3: Workers not applied</h1>
+
+    <h2>Customer ticket</h2>
+    <blockquote class="ticket">
+      <p>“I've just added a Worker on the Cloudflare Dashboard for my website: it works in the debugger but doesn't work when I query the site. Why is that? Is there anything to activate or anything I could check?”</p>
+    </blockquote>
+
+    <h2>Response to the customer</h2>
+    <p>
+      Hello, dear [customer name].
+    </p>
+    <p>
+      Thank you for reaching out to us regarding the issue you're experiencing with your Worker.  I understand that it works in the debugger but not when you query your site, and I'm here to help you resolve this.
+    </p>
+    <p>
+      To check if the Worker is applied correctly, please follow these steps:
+    </p>
+    <ol>
+      <li>
+        Saving and publishing the Worker: Ensure that you have saved and published the Worker after making any changes. Sometimes, changes may not take effect until the Worker is published, which can be verified in your Worker's Deployments tab.
+      </li>
+      <li>
+        Attaching your worker to your domain: In your Worker settings, make sure that a route is defined on the &lt;your-domain&gt;.com zone. While the Worker's own address works by itself, it doesn't put the worker on your domain unless you define a route.
+      </li>
+      <li>
+        The route should match the exact URL you are testing:
+        <ul>
+          <li>
+            For example, if your Worker is set to run on &lt;*.your-domain&gt;.com/*, it will apply to all paths under that domain but not your-domain.com.
+          </li>
+          <li>
+            End the pattern with a wildcard (*) to ensure it applies to all paths, such as &lt;your-domain&gt;.com/*, rather than just &lt;your-domain&gt;.com.
+          </li>
+          <li>
+            Ensure that the wildcard (*) is used only at the start and end of the path. Otherwise, in invalid cases like &lt;your-domain&gt;.com/*.jpg, the worker will not be applied correctly.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Review your plan's daily limit: If you are on a free plan, please note that there is a daily limit of 100,000 requests for Workers. If you exceed this limit, the Worker will not be applied until the next day at midnight UTC.
+      </li>
+    </ol>
+    <p>
+      You may confirm that the worker is running in your Worker dashboards by opening the live logs.
+    </p>
+    <ul>
+      <li>
+        If no request appears, the request isn't reaching the worker, and you should check the points above.
+      </li>
+      <li>
+        If requests appear with errors, the code is failing on real traffic. This commonly occurs when a secret or variable isn't set in production, or a check on the hostname or path only matched the preview's URL.
+      </li>
+    </ul>
+    <p>
+      A trick you can use to verify whether it ran is to have the Worker attach a header to every response, in the following
+      form:<pre>[url]
+  [name]: [value]</pre>
+      This allows you to use the following curl command when testing: <pre>curl -sD - -o /dev/null https://&lt;your-domain&gt; | grep -i [name]</pre>
+      Lastly, I advise you use a private window when testing to avoid viewing a cached copy of the page.
+    </p>
+    <p>
+      If the Worker still doesn't apply after these checks, please share the exact URL and the name of the Worker being tested, and I can trace the request from our side.
+    </p>
+    <p>
+      Best regards, <br>
+      Alen Valdez Siller,<br>
+      Cloudflare Support
+    </p>
+    <h2>Thought process</h2>
+    <p>
+      I begin by acknowledging their concerns and their observation about the Worker being invoked in the debugger. This narrows down the issue and indicates that it skips everything real traffic goes through: DNS, routes, deployment state, and plan limits. Saying this reassures the customer and shows to them that the search for the issue is narrowed down.
+    </p>
+    <p>
+      Since the search for the issue has been narrowed down, we must now verify the three ways a Worker receives traffic.
+    </p>
+    <ul>
+      <li>
+        The worker may be saved, but not published which would affect real traffic.
+      </li>
+      <li>
+        Custom domain routes must be defined for the Worker, otherwise, it won't appear.
+      </li>
+      <li>
+        Route matching is essential in assuring that the worker is applied correctly. Since the syntax for routing must be exact, we need to verify that it is not conflicting with or missing any URLs. This is where route patterns can become a common trap for users.
+      </li>
+    </ul>
+    <p>
+      Lastly, so we can split the possible solution into two categories, I suggested that the customer worked with live logs and attaching headers. This is the fastest check for verifying whether the issue is routing-based or code-based.
+    </p>
+    <p>
+      We empower the customer by giving them tips and tools such as attaching header and verifying live logs, to mitigate repeat incidents and easier debugging on their end.
+    </p>
+    <h2>Tools I would use and why</h2>
+    <p>
+      Where available, I would use the following tools:
+    </p>
+    <ul>
+      <li>
+        <strong>Cloudflare dashboard</strong>: In the Worker Deployments tab, we can view which version is live and whether a deployment is splitting traffic.
+      </li>
+      <li>
+        <strong>Worker's Settings</strong>: We can verify in the Domain & Routes every route on the zone, including ones with no Worker that exclude a path.
+      </li>
+      <li>
+        <strong> Worker Documentation:</strong> Consulting the documentation regarding worker usage can help us compare with the customer's implementation and provide proven advise.
+      </li>
+      <li>
+        <strong>Account usage</strong>: Viewing the usage shows whether the customer has reached their daily request limit.
+      </li>
+    </ul>
+
+    <div class="pager">
+      <a href="case2.html">Previous: Case 2</a>
+      <a href="case4.html">Next: Case 4</a>
+    </div>
+  </main>
+</body>
+</html>

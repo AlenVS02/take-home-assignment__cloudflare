@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case 1 - Take Home Assignment</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <ul class="header-list">
+        <li class="header-item"><a href="../index.html">Home</a></li>
+        <li class="header-item">
+          <a href="../index.html#cases">Cases ▾</a>
+          <ul class="case-list">
+            <li><a href="case1.html">Case 1</a></li>
+            <li><a href="case2.html">Case 2</a></li>
+            <li><a href="case3.html">Case 3</a></li>
+            <li><a href="case4.html">Case 4</a></li>
+            <li><a href="case5.html">Case 5</a></li>
+            <li><a href="case6.html">Case 6</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Case 1: Site down, your name servers are down</h1>
+
+    <h2>Customer ticket</h2>
+    <blockquote class="ticket">
+      <p>“I am having trouble reaching my website http://example.com/ from different networks. Are your nameservers working properly?”</p>
+    </blockquote>
+
+    <h2>Response to the customer</h2>
+    <p>Hello, dear [customer name],</p>
+    <p>
+      Thanks you for getting in touch, and I'm sorry to hear that you are having trouble reaching your website. I understand how frustrating this can be, and I want to assure you that we are here to help you.
+    </p>
+    <p>
+      When a site loads on some networks but not on others, the cause is often related to how the domain points to Cloudflare, not in the nameservers. Since each network uses its own DNS resolver, those resolvers can end up with different answers.
+    </p>
+    <p>
+      Please help us troubleshooting the issue by following the steps below:
+    <ol>
+      <li>
+        <b>Nameservers at your registrar.</b> At your domain registrar, where you registered example.com, confirm that the nameservers are correctly set to Cloudflare's. To verify this, ensure that the nameserver list follows the pattern: &lt;proper_name&gt;.ns.cloudflare.com and nothing else. If any other nameservers are still listed next to ours, each resolver will pick at random, so some networks may get old or missing answers. Similarly, if they were recently changed, some resolvers may still have cached the old information. The TLD .com, for example, permits a caching of up to 48 hours. </li>
+      <li>
+        <b>DNSSEC.</b> If DNSSEC was on with your previous DNS provider, the registrar may still hold a DS record for that provider's keys. If so, the resolvers validating the DNSSEC will reject our answers, and the site will only load on resolvers that to not validate. The fix is to remove the DS record at your registrar. If you would like DNSSEC enabled, you can do so in your Cloudflare dashboard by adding the new DS record it shows you.
+      </li>
+      <li>
+        <b>Cloudflare error page.</b> If you see a page with an error number and a Ray ID, the DNS is working, and the problem is between Cloudflare and the origin server. Please consult the error page (https://developers.cloudflare.com/support/troubleshooting/http-status-codes/) for more information and how to fix it.
+      </li>
+    </ol>
+    <p>
+      If you are still having trouble, please provide us, where available, with the following:
+    </p>
+    <ul>
+      <li>A screenshot of the error page you are seeing.</li>
+      <li>What is the error page you are seeing.</li>
+      <li>What is the Ray ID on that page.</li>
+    </ul>
+    <p>
+      Thank you for your patience and cooperation. We look forward to resolving this issue for you as quickly as possible.
+    </p>
+    <p>
+      Best regards,<br>
+      Alen Valdez Siller <br>
+      Cloudflare Support
+    </p>
+
+    <h2>Thought process</h2>
+    <p>
+      The first thing I did was to separate the customer's observation from the actual problem. The customer presumes that the our nameservers are down, but the problem is reflected in him not being able to reach his website from different networks. I then explained the possible causes of the problem and provided a step-by-step guide to troubleshoot the issue. I also requested additional information from the customer to help us further diagnose the problem if needed.
+    </p>
+    </p>
+      We can rule out the possibility of Cloudflare being the culprit because the customer is able to reach his website from some networks. However, just to verify, we can check cloudflarestatus.com to confirm the status of Cloudflare's services. The problem is likely related to how the domain points to Cloudflare, which can be caused by incorrect nameserver settings at the registrar, DNSSEC issues, or problems between Cloudflare and the origin server. This is reflected in the chain of troubleshooting steps provided to the customer, which address each of these potential causes, while following the resolver's chain of order and escalating the degree of complexity for each possible issue.
+    </p>
+    <p>
+      In the case that the DNS is working, but the customer still experiences the same issues, it is likely that a Cloudflare error page is being displayed. In this case, the customer should provide us with the error page, the error number, and the Ray ID to help us further diagnose the problem. This is the point where we collect more evidence that lies beyond our control, and we can then escalate the issue to the appropriate team for further investigation.
+    </p>
+    <p>
+      The tone used in the response is empathetic and professional, acknowledging the customer's frustration and assuring them that we are here to help. While we initially separate the customer's observation from the actual problem, we never dismiss their concerns and provide clear instructions to help them troubleshoot the issue. Additionally, we request further information from the customer to help us diagnose the problem if needed, while maintaining a polite and professional tone throughout the response.
+    </p>
+    <h2>Tools I would use and why</h2>
+    <p>
+      To troubleshoot the issue, I would use the following tools:
+    </p>
+    <ul>
+      <li><b>Cloudflare status page:</b> To check the status of Cloudflare's services and confirm that there are no ongoing issues that could be affecting the customer's website.</li>
+      <li><b>DNS lookup tools:</b> To verify the nameserver settings at the registrar and ensure that they are correctly set to Cloudflare's nameservers.</li>
+      <li><b>DNSSEC validation tools:</b> To check if DNSSEC is enabled and if there are any issues with the DS record at the registrar.</li>
+      <li><b>Error page analysis:</b> To analyze any error pages displayed to the customer, including the error number and Ray ID, to help diagnose the problem further.</li>
+    </ul>
+
+    <div class="pager">
+      <a href="../index.html#cases">Back to all cases</a>
+      <a href="case2.html">Next: Case 2</a>
+    </div>
+  </main>
+</body>
+</html>

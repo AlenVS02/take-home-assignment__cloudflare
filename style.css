@@ -1,0 +1,131 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+header {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 40px;
+}
+
+.header-list {
+  display: flex;
+  gap: 10px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-item {
+  position: relative;
+}
+
+.header-item > a {
+  display: block;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.case-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  min-width: 120px;
+  list-style-type: none;
+  margin: 0;
+  padding: 5px 0;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+}
+
+.header-item:hover .case-list,
+.header-item:focus-within .case-list {
+  display: block;
+}
+
+.case-list a {
+  display: block;
+  padding: 8px 15px;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+.subtitle {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+h2 {
+  margin-top: 30px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  font-size: 20px;
+}
+
+.cases li {
+  margin-bottom: 8px;
+}
+
+pre {
+  padding: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  overflow-x: auto;
+}
+
+.ticket {
+  margin: 0;
+  font-style: italic;
+}
+
+.ticket pre {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+
+.site-info {
+  margin-top: 40px;
+  padding-top: 15px;
+  border-top: 1px solid #ccc;
+}
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 15px;
+  border-top: 1px solid #ccc;
+}

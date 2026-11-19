@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case 4 - Take Home Assignment</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <ul class="header-list">
+        <li class="header-item"><a href="../index.html">Home</a></li>
+        <li class="header-item">
+          <a href="../index.html#cases">Cases ▾</a>
+          <ul class="case-list">
+            <li><a href="case1.html">Case 1</a></li>
+            <li><a href="case2.html">Case 2</a></li>
+            <li><a href="case3.html">Case 3</a></li>
+            <li><a href="case4.html">Case 4</a></li>
+            <li><a href="case5.html">Case 5</a></li>
+            <li><a href="case6.html">Case 6</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Case 4: Cloudflare Nameservers</h1>
+
+    <h2>Customer ticket</h2>
+    <blockquote class="ticket">
+      <p>“How are Cloudflare's nameservers different from the DNS provided by Google DNS or OpenDNS? Can I delegate to Cloudflare nameservers while still using my host's DNS?”</p>
+    </blockquote>
+
+    <h2>Response to the customer</h2>
+    <p>
+      Hello, dear [customer name],
+    </p>x
+    <p>
+      Thank you for the question, these two kinds of DNS work differently in the same lookup, so they're easily mixed.
+    </p>
+    <p>
+      Google DNS and OpenDNS are resolvers. When someone visits your site, their device asks a resolver to find the address, which could be their internet provider's resolver, or a public resolver such as Google's (8.8.8.8), OpenDNS or our own (1.1.1.1). The fundamental difference is that a resolverlooks up any domain for anyone and remembers the answer for a while, which is the visitors' choice, not yours.
+    </p>
+    <p>
+      Cloudflare's nameservers hold your DNS records and give the official answer for &lt;your-domain&gt;.com. Every resolver, such as Google's or OpenDNS's requests records through the nameserver.
+    </p>
+    <p>
+      To answer your question "Can I delegate to Cloudflare nameservers while still using my host's DNS?", it is essential to understand that not using both at once is not possible, since delegating to our nameservers makes them authoritative. That is to say, your DNS records are managed in Cloudflare.
+    </p>
+    <p>
+      Please note that this doesn't move your website or email, though. When you add your domain we import your existing records and they point to your host's servers. The only place that changes is where you edit the records. Before you switch the nameservers at your registrar, we recommend that you compare the imported records with your host's, especially the MX and TXT records that your email depends on.
+    </p>
+    <p>
+      In the case you need your host to stay authoritative, there are two options on different plans:
+    </p>
+    <ul>
+      <li>
+        Partial CNAME setup: On our Business and Enterprise plans, your host keeps your DNS. For each hostname you want to go through Cloudflare, you can add a CNAME record at your host. For example www.example.com pointing to www.example.com.cdn.cloudflare.net, plus a TXT record that proves it is your own domain.
+      </li>
+      <li>
+        Secondary DNS: On our Enterprise plan, your host stays the primary, and Cloudflare keeps a copy of your zone through zone transfers.
+      </li>
+    </ul>
+    <p>
+      If you need your host to stay in charge of DNS, please let me know and I can help you choose the option that best fits what you are looking for.
+    </p>
+    <p>
+      Best regards,<br>
+      Alen Valdez Siller <br>
+      Cloudflare Support
+    </p>
+    <h2>Thought process</h2>
+    <p>
+      Firstly, I must split the questions being asked in the ticket: recursive against authoritative DNS and a contradiction of keeping the host authoritative while delegating to Cloudflare. It is important to recognize this as the main concern, while the initial question is a simple query, albeit important.
+    </p>
+    <p>
+      Instead of burying the worker in technical jargon, we explain the roles that are at play. We make a point about resolvers using their examples (Google and OpenDNS), authoritative nameservers, and clarifying that Cloudflare runs both.
+    </p>
+    <p>
+      The second question is then directly answered, so the main response is not buried in an explanation which allows us to reassure the customer that moving DNS doesn't move hosting - Cloudflare imports the existing records during setup.
+    </p>
+    <p>
+      It is important that I warn the customer preventing most migration issues: records that are usually missing from an import are email records such as MX, TXT, and DKIM among others. This is the most common reason an email breaks after a move.
+    </p>
+    <p>
+      We then offer alternatives that the customer might be interested only in so far as they are relevant while pointing out the plan requirements.
+    </p>
+    <h2>Tools I would use and why</h2>
+    <ul>
+      <li>
+        Using the CLoudflare dashboard, we can view the assigned name servers and the plan through zone Overview. Additionally, DNS records let me compare the imported records with the host's zone before the switch.
+      </li>
+      <li>
+        From my own end, I can prompt the domain with a dig command (dig NS example.com) to show who is authoritative. Additionally, I can prompt with WHOIS or RDAP to show the nameservers the registrar currently lists for the domain.
+      </li>
+      <li>
+        Cloudflare docs on partial setup and secondary DNS to confirm plan requirements before offering either option.
+      </li>
+    </ul>
+    <div class="pager">
+      <a href="case3.html">Previous: Case 3</a>
+      <a href="case5.html">Next: Case 5</a>
+    </div>
+  </main>
+</body>
+</html>

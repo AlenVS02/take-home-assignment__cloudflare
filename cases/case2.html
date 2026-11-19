@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case 2 - Take Home Assignment</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <ul class="header-list">
+        <li class="header-item"><a href="../index.html">Home</a></li>
+        <li class="header-item">
+          <a href="../index.html#cases">Cases ▾</a>
+          <ul class="case-list">
+            <li><a href="case1.html">Case 1</a></li>
+            <li><a href="case2.html">Case 2</a></li>
+            <li><a href="case3.html">Case 3</a></li>
+            <li><a href="case4.html">Case 4</a></li>
+            <li><a href="case5.html">Case 5</a></li>
+            <li><a href="case6.html">Case 6</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Case 2: Why is my site coming from California?!</h1>
+
+    <h2>Customer ticket</h2>
+    <blockquote class="ticket">
+      <p>“I’m in London, but looking at your IPs it shows that you are serving my website from California. Can that be right? Why is that? I thought you were supposed to serve my website from some places close to me?”</p>
+    </blockquote>
+
+    <h2>Response to the customer</h2>
+    <p>
+      Hello, dear [customer name].
+    </p>
+    <p>
+      Thank you for reaching out to us. I understand your concern regarding the location from which your website is being served. You are correct in expecting that your website would be served from a location close to you, such as London. Cloudflare is built to serve your visitors from a centre close to them, and from London, that would be our London data center. However, it is important to note that an IP lookup differs from the network path your request takes.
+    </p>
+    <p>
+      To understand why your website lookup shows an IP from California, we need to understand the routing method Cloudflare uses: Anycast. When requests come into an IP address with Anycast, the network distributes the data based on a prioritization methodology. This means that the request may be routed to a different data center than the one closest to you with the objective of reducing latency and improving performance.
+    </p>
+    <p>
+      This often happens when the closest data center is overwhelmed with high traffic or is temporarily unavailable. With Anycast, however, the request load is spread across other available data centers, which may be located in different regions, such as California. This is a normal behavior and is part of how Cloudflare optimizes the delivery of content to users worldwide.
+    </p>
+    <p>
+      To verify where you really are being served from, you can visit your website https://&lt;yourdomain&gt;/cdn-cgi/trace. Once you access this page, you will see a list of information about your request, including the data center that served your request in the "colo" field. The code in this field is the IATA code of the nearest airport to the data center that served your request. For example, if you see "LHR" in the "colo" field, it indicates that your request was served from our London data center.
+    </p>
+    <p>
+      For more information about troubleshooting endpoints and understanding the data center codes, please refer to our documentation at <a href="https://developers.cloudflare.com/fundamentals/reference/cdn-cgi-endpoint/">Cloudflare Documentation</a>.
+    </p>
+    <p>
+      I hope this clarifies the situation. If you have any further questions or concerns, please do not hesitate to reach out to us. We are here to assist you.
+    </p>
+    <p>
+      Best regards,<br>
+      Alen Valdez Siller<br>
+      Cloudflare Support
+    </p>
+
+    <h2>Thought process</h2>
+    <p>
+      Firstly, I need to acknowledge the customer's concern and confusion regarding the location from which their website is being served. While they are right in their assumption, I need to explain the technical aspect of how the differing routing is not to their detriment, but rather a part of Cloudflare's optimization process.
+    </p>
+    <p>
+      To do this, I also need to explain the Anycast routing method and how it works. I then provide a clear explanation of the cases in which the request is routed to a different data center by circling back to their original concern.
+    </p>
+    <p>
+      Often times, a customer may require more than just an explanation and may want to verify the information themselves. Therefore, I provide them with a reliable method to verify the data center that served their request, along with a link to the documentation for any further doubt they may have.
+    </p>
+    <p>
+      In the case they have any further questions or concerns, I make sure to offer them the opportunity to reach out for further assistance.
+    </p>
+    <h2>Tools I would use and why</h2>
+    <p>
+      If available, I would use the following tools:
+    </p>
+    <ul>
+      <li>
+        <strong>Cloudflare Dashboard:</strong> Through the dashboard, one may view the DNS records and their origin.
+      </li>
+      <li>
+        <strong>https://&lt;yourdomain&gt;/cdn-cgi/trace:</strong> This endpoint provides a quick and easy way for the customer to verify the data center that served their request, allowing them to see the "colo" field and confirm the location.
+      </li>
+      <li>
+        <strong>Cloudflare Documentation:</strong> Providing a link to the official documentation ensures that the customer has access to accurate and detailed information about the Anycast routing method and troubleshooting endpoints.
+      </li>
+      <li>
+        <strong>IP Lookup Tools:</strong> While not necessary for the customer, I may use IP lookup tools to verify the information and ensure that the response I provide is accurate and reliable. However, I need to be careful when doing this since my lookup may not be accurate due to the nature of Anycast routing, and I should not rely solely on this method for verification. For example, if I were to send a curl request to the customer's website, I may receive a response from a different data center than the one that served the customer's request, leading to confusion and misinformation.
+      </li>
+    </ul>
+
+    <div class="pager">
+      <a href="case1.html">Previous: Case 1</a>
+      <a href="case3.html">Next: Case 3</a>
+    </div>
+  </main>
+</body>
+</html>

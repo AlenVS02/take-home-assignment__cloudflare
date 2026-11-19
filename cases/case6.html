@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case 6 - Take Home Assignment</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <ul class="header-list">
+        <li class="header-item"><a href="../index.html">Home</a></li>
+        <li class="header-item">
+          <a href="../index.html#cases">Cases ▾</a>
+          <ul class="case-list">
+            <li><a href="case1.html">Case 1</a></li>
+            <li><a href="case2.html">Case 2</a></li>
+            <li><a href="case3.html">Case 3</a></li>
+            <li><a href="case4.html">Case 4</a></li>
+            <li><a href="case5.html">Case 5</a></li>
+            <li><a href="case6.html">Case 6</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Case 6: Redirection based on user agent</h1>
+
+    <h2>Customer ticket</h2>
+    <blockquote class="ticket">
+      <p>“I want to redirect visitor with specific user agent (*MSIE 8.0* for example) to a different page. It seems this is not possible with Cloudflare Page Rules. Is there any other way to achieve that using Cloudflare?”</p>
+    </blockquote>
+
+    <h2>Response to the customer</h2>
+    <p>
+      Hello, dear [customer's name].
+    </p>
+    <p>
+      Thank you for reaching out with your question regarding user agent-based redirection. You are right that Cloudflare Page Rules do not support redirection based on user agents directly. They only match on the URL, not on request headers like the User-Agent, and are being replaced by newer Cloudflare features such as Transform Rules and Workers, which provide more flexibility for handling requests based on headers and other criteria.
+    </p>
+    <p>
+      You can implement it without any code by using a Redirect Rule, which is available to all plans.
+    </p>
+    <p>
+      To set it up, please refer to the following steps:
+    </p>
+    <ol>
+      <li>
+        Go to the Cloudflare dashboard for your domain and navigate to the "Rules" section.
+      </li>
+      <li>
+        Select "Redirect Rules" and create a new rule.
+      </li>
+      <li>
+        Set the condition to match the User-Agent header containing the specific value you want to redirect (e.g., *MSIE 8.0*) under Custom filter expression > Edit expression.
+      </li>
+      <li>
+        Under The "Then" section, specify the destination URL where you want to redirect the matching visitors.
+      </li>
+      <li>
+        Save and deploy the rule.
+      </li>
+    </ol>
+    <p>
+      By following these steps, you can create a redirection rule that targets visitors with specific user agents without writing custom code. This approach leverages Cloudflare's built-in capabilities to handle header-based conditions efficiently.
+    </p>
+    <p>
+      To test this redirection, you can use a browser with the specific user agent or a tool like curl to simulate a request with the desired User-Agent header. For example:
+    </p>
+    <pre>curl -A "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)" -I https://example.com/</pre>
+    <p>
+      If you were to need help with logic, such as several conditions or a different page per browser version, you would likely need to use Cloudflare Workers, which allow you to write custom JavaScript to handle requests and implement complex redirection logic based on headers, cookies, or other request attributes.
+    </p>
+    <p>
+      Please note that OS versions such as Windows XP's Internet Explorer do not support SNI, which our SSL certificates rely on for secure connections. As a result, users on these older systems may encounter SSL errors when trying to access your site.
+    </p>
+    <p>
+      If your question was not fully addressed by the information provided above, please feel free to reach out with additional details or clarifications so that we can assist you further.
+    </p>
+    <p>
+      Best regards,
+      <br>
+      Alen Valdez Siller
+      <br>
+      Cloudflare Support
+    </p>
+    <h2>Thought process</h2>
+    <p>
+      I initially confirm that their supposition is right about targeting visitors with specific user agents for redirection. This builds trust and allows us to move with the actual solution.
+    </p>
+    <p>
+      Next, I outline the steps to implement the redirection using Cloudflare's built-in capabilities, ensuring that the solution is both efficient and maintainable without requiring custom code. This is important for long-term management and is the easiest approach for most use cases, thus creating a no-friction solution which is more easily adopted by the customer.
+    </p>
+    <p>
+      Lastly, it is important to address potential limitations and edge cases, such as older browsers or operating systems that may not support certain security features like SNI. This ensures that the solution is robust and that users are aware of any potential issues they might encounter.
+    </p>
+    <p>
+      To wrap the previous warning, I leave the channel of communication open so that the customer can reach out with any further questions or clarifications, ensuring they feel supported throughout the implementation process.
+    </p>
+
+    <h2>Tools I would use and why</h2>
+    <p>
+      I would primarily use Cloudflare's Page Rules and Workers for this task. Page Rules provide a straightforward way to implement redirection based on URL patterns and conditions, making it suitable for simple user-agent based redirects. For more complex scenarios, such as multiple conditions or dynamic redirection logic, Cloudflare Workers allow for custom JavaScript to handle requests, giving full control over the redirection process based on headers, cookies, or other request attributes.
+    </p>
+
+    <div class="pager">
+      <a href="case5.html">Previous: Case 5</a>
+      <a href="../index.html#cases">Back to all cases</a>
+    </div>
+  </main>
+</body>
+</html>
